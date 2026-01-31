@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>🎮 DZ7 Engine - Sua Key</title>
+    <title>🎮 DZ7 Engine - Key Gratuita</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         * {
@@ -47,13 +47,65 @@
             font-size: 16px;
         }
         
+        /* ETAPA 1 - Detecção */
+        .detection-screen {
+            display: block;
+        }
+        
+        .detection-box {
+            background: #e3f2fd;
+            border: 2px solid #bbdefb;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+        
+        .detection-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        /* ETAPA 2 - Espera */
+        .wait-screen {
+            display: none;
+        }
+        
+        .countdown {
+            font-size: 72px;
+            font-weight: bold;
+            color: #8B00FF;
+            margin: 20px 0;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #8B00FF;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        /* ETAPA 3 - Key */
+        .key-screen {
+            display: none;
+        }
+        
         .key-box {
             background: #f8f9fa;
             border: 2px dashed #8B00FF;
             border-radius: 10px;
             padding: 20px;
             margin: 25px 0;
-            position: relative;
         }
         
         .key {
@@ -78,49 +130,33 @@
             transition: all 0.3s;
         }
         
-        .copy-btn:hover {
-            background: #7a00e6;
-            transform: translateY(-2px);
-        }
-        
-        .copy-btn:active {
-            transform: translateY(0);
-        }
-        
-        .instructions {
-            background: #e8f4ff;
-            border-radius: 10px;
-            padding: 20px;
-            margin-top: 25px;
-            text-align: left;
-        }
-        
-        .step {
-            display: flex;
-            align-items: center;
-            margin: 10px 0;
-        }
-        
-        .step-number {
-            background: #8B00FF;
-            color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 15px;
-            font-weight: bold;
-        }
-        
         .alert {
             background: #fff3cd;
             border: 1px solid #ffeaa7;
             border-radius: 10px;
             padding: 15px;
-            margin-top: 20px;
+            margin: 20px 0;
             color: #856404;
+        }
+        
+        .success {
+            background: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        
+        .info-box {
+            background: #e8f4ff;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: left;
+        }
+        
+        .device-info {
+            font-size: 14px;
+            color: #666;
+            margin: 5px 0;
         }
         
         .timer {
@@ -149,115 +185,349 @@
 </head>
 <body>
     <div class="container">
-        <div class="logo">🎮</div>
-        <h1>DZ7 ENGINE PRO</h1>
-        <p class="subtitle">Sua key de 2 horas está pronta!</p>
-        
-        <div class="key-box">
-            <p style="color: #666; margin-bottom: 10px;">🔑 SUA KEY:</p>
-            <div class="key" id="keyText">CARREGANDO...</div>
-            <div class="timer">⏱️ Key válida por: <span id="timer">2:00</span></div>
-            <div class="expiry">⏰ Expira em: <span id="expiryTime">--:--</span></div>
+        <!-- ETAPA 1: DETECÇÃO -->
+        <div id="detectionScreen" class="detection-screen">
+            <div class="logo">📍</div>
+            <h1>DZ7 ENGINE - VERIFICAÇÃO</h1>
+            <p class="subtitle">Detectando seu dispositivo...</p>
+            
+            <div class="detection-box">
+                <div class="detection-item">
+                    <span>🌍 Localização:</span>
+                    <span id="location">Detectando...</span>
+                </div>
+                <div class="detection-item">
+                    <span>📱 Dispositivo:</span>
+                    <span id="device">Detectando...</span>
+                </div>
+                <div class="detection-item">
+                    <span>⏰ Próximo teste:</span>
+                    <span id="nextTest">Verificando...</span>
+                </div>
+            </div>
+            
+            <div class="alert" id="cooldownAlert" style="display: none;">
+                ⏳ <strong>AGUARDE 3 DIAS!</strong><br>
+                Você já pegou uma key recentemente. Volte em: <span id="cooldownTime"></span>
+            </div>
+            
+            <div id="proceedSection" style="display: none;">
+                <div class="alert success">
+                    ✅ <strong>VERIFICAÇÃO APROVADA!</strong><br>
+                    Você pode prosseguir para pegar sua key.
+                </div>
+                
+                <button class="copy-btn" onclick="proceedToWait()">
+                    🎮 PEGAR KEY GRATUITA
+                </button>
+            </div>
         </div>
         
-        <button class="copy-btn" onclick="copyKey()">
-            📋 COPIAR KEY
-        </button>
-        
-        <div class="instructions">
-            <div class="step">
-                <div class="step-number">1</div>
-                <div>Clique no botão acima para copiar a key</div>
+        <!-- ETAPA 2: ESPERA -->
+        <div id="waitScreen" class="wait-screen">
+            <div class="logo">⏳</div>
+            <h1>AGUARDE 10 SEGUNDOS</h1>
+            <p class="subtitle">Prevenção contra abuso...</p>
+            
+            <div class="countdown" id="countdown">10</div>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
             </div>
-            <div class="step">
-                <div class="step-number">2</div>
-                <div>Volte para o Discord</div>
-            </div>
-            <div class="step">
-                <div class="step-number">3</div>
-                <div>Use o comando: <code style="background: #333; color: #0f0; padding: 5px 10px; border-radius: 5px;">/resgatar SUA_KEY</code></div>
+            
+            <div class="info-box">
+                <p>📝 <strong>Por que essa espera?</strong></p>
+                <p>• Previne bots e abuso do sistema</p>
+                <p>• Garante que apenas humanos recebam keys</p>
+                <p>• Limite: 1 key a cada 3 dias por dispositivo</p>
             </div>
         </div>
         
-        <div class="alert">
-            ⚠️ <strong>IMPORTANTE:</strong> Esta key é pessoal e intransferível. 
-            Não compartilhe com ninguém!
+        <!-- ETAPA 3: KEY -->
+        <div id="keyScreen" class="key-screen">
+            <div class="logo">🎮</div>
+            <h1>KEY GERADA COM SUCESSO!</h1>
+            <p class="subtitle">Key válida por 2 horas</p>
+            
+            <div class="key-box">
+                <p style="color: #666; margin-bottom: 10px;">🔑 SUA KEY:</p>
+                <div class="key" id="keyText">CARREGANDO...</div>
+                <div class="timer">⏱️ Válida por: <span id="timer">2:00:00</span></div>
+                <div class="expiry">⏰ Expira em: <span id="expiryTime">--:--</span></div>
+            </div>
+            
+            <button class="copy-btn" onclick="copyKey()">
+                📋 COPIAR KEY
+            </button>
+            
+            <div class="info-box">
+                <div class="device-info">📍 Local: <span id="displayLocation"></span></div>
+                <div class="device-info">🆔 ID do Dispositivo: <span id="deviceId"></span></div>
+                <div class="device-info">📅 Próximo teste disponível: <span id="nextAvailable"></span></div>
+            </div>
+            
+            <div class="alert" id="finalAlert">
+                ⚠️ <strong>LIMITE:</strong> 1 key a cada 3 dias por dispositivo/location.
+            </div>
+            
+            <a href="https://discord.com" class="discord-btn" target="_blank">
+                🔗 VOLTAR PARA O DISCORD
+            </a>
         </div>
-        
-        <a href="https://discord.com" class="discord-btn" target="_blank">
-            🔗 VOLTAR PARA O DISCORD
-        </a>
     </div>
 
     <script>
-        // Pegar key da URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const key = urlParams.get('key');
-        const expiry = urlParams.get('expiry') || '2:00';
+        // Variáveis globais
+        let userKey = '';
+        let userLocation = '';
+        let deviceId = '';
+        let nextAvailable = '';
         
-        // Mostrar key
-        if (key) {
-            document.getElementById('keyText').textContent = key;
-            document.getElementById('expiryTime').textContent = expiry;
-        } else {
-            document.getElementById('keyText').textContent = 'KEY NÃO ENCONTRADA';
-            document.getElementById('keyText').style.color = '#ff6b6b';
+        // Inicializar quando a página carregar
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Pegar parâmetros da URL
+            const urlParams = new URLSearchParams(window.location.search);
+            userKey = urlParams.get('key');
+            userLocation = urlParams.get('location') || 'Desconhecido';
+            deviceId = urlParams.get('device') || 'desconhecido';
+            nextAvailable = urlParams.get('next') || '3 dias';
+            
+            // Detectar informações do usuário
+            await detectUserInfo();
+            
+            // Verificar se pode pegar key
+            checkEligibility();
+        });
+        
+        // Detectar informações do usuário
+        async function detectUserInfo() {
+            try {
+                // Detectar localização via IP
+                const ipResponse = await fetch('https://ipapi.co/json/');
+                const ipData = await ipResponse.json();
+                
+                userLocation = `${ipData.city || 'Desconhecido'}, ${ipData.country_name || 'Desconhecido'}`;
+                
+                // Detectar dispositivo
+                const device = detectDevice();
+                
+                // Gerar ID único do dispositivo
+                deviceId = generateDeviceId(ipData.ip, device);
+                
+                // Atualizar tela de detecção
+                document.getElementById('location').textContent = userLocation;
+                document.getElementById('device').textContent = device;
+                document.getElementById('displayLocation').textContent = userLocation;
+                document.getElementById('deviceId').textContent = deviceId.substring(0, 12) + '...';
+                document.getElementById('nextAvailable').textContent = nextAvailable;
+                
+            } catch (error) {
+                console.error('Erro na detecção:', error);
+                userLocation = 'Localização não detectada';
+                deviceId = 'device_' + Math.random().toString(36).substr(2, 9);
+            }
         }
         
-        // Timer de 2 horas
-        let totalSeconds = 2 * 60 * 60; // 2 horas em segundos
-        const timerElement = document.getElementById('timer');
+        // Detectar tipo de dispositivo
+        function detectDevice() {
+            const ua = navigator.userAgent;
+            
+            if (/Mobile|Android|iPhone|iPad|iPod|Opera Mini|IEMobile/i.test(ua)) {
+                if (/iPhone|iPad|iPod/i.test(ua)) return 'iOS';
+                if (/Android/i.test(ua)) return 'Android';
+                return 'Mobile';
+            }
+            
+            if (/Windows/i.test(ua)) return 'Windows';
+            if (/Mac/i.test(ua)) return 'Mac';
+            if (/Linux/i.test(ua)) return 'Linux';
+            
+            return 'Desktop';
+        }
         
-        function updateTimer() {
-            if (totalSeconds <= 0) {
-                timerElement.textContent = "EXPIRADA";
-                timerElement.style.color = "#ff6b6b";
-                document.getElementById('keyText').style.color = "#999";
+        // Gerar ID único do dispositivo
+        function generateDeviceId(ip, device) {
+            const fingerprint = [
+                navigator.userAgent,
+                navigator.language,
+                screen.width + 'x' + screen.height,
+                new Date().getTimezoneOffset(),
+                device
+            ].join('|');
+            
+            return btoa(fingerprint).substring(0, 32);
+        }
+        
+        // Verificar se usuário pode pegar key
+        function checkEligibility() {
+            // Verificar se tem key na URL
+            if (!userKey || userKey === 'null') {
+                document.getElementById('proceedSection').innerHTML = `
+                    <div class="alert">
+                        ❌ <strong>ERRO:</strong> Key não encontrada!<br>
+                        Volte ao Discord e use <code>/teste</code> novamente.
+                    </div>
+                `;
+                document.getElementById('proceedSection').style.display = 'block';
                 return;
             }
             
-            const hours = Math.floor(totalSeconds / 3600);
-            const minutes = Math.floor((totalSeconds % 3600) / 60);
-            const seconds = totalSeconds % 60;
+            // Verificar cooldown (simulado - na prática viria do backend)
+            const lastAccess = localStorage.getItem('dz7_last_access');
             
-            timerElement.textContent = 
-                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            if (lastAccess) {
+                const lastDate = new Date(lastAccess);
+                const now = new Date();
+                const daysDiff = (now - lastDate) / (1000 * 60 * 60 * 24);
+                
+                if (daysDiff < 3) {
+                    const nextDate = new Date(lastDate);
+                    nextDate.setDate(nextDate.getDate() + 3);
+                    
+                    document.getElementById('cooldownTime').textContent = 
+                        nextDate.toLocaleDateString() + ' ' + nextDate.toLocaleTimeString();
+                    document.getElementById('cooldownAlert').style.display = 'block';
+                    return;
+                }
+            }
             
-            totalSeconds--;
+            // Usuário pode prosseguir
+            document.getElementById('proceedSection').style.display = 'block';
+            document.getElementById('nextTest').textContent = 'Agora!';
         }
         
-        // Atualizar timer a cada segundo
-        setInterval(updateTimer, 1000);
-        updateTimer();
+        // Ir para tela de espera
+        function proceedToWait() {
+            document.getElementById('detectionScreen').style.display = 'none';
+            document.getElementById('waitScreen').style.display = 'block';
+            
+            // Iniciar contagem regressiva
+            startCountdown();
+        }
         
-        // Função copiar key
+        // Contagem regressiva de 10 segundos
+        function startCountdown() {
+            let seconds = 10;
+            const countdownElement = document.getElementById('countdown');
+            const progressFill = document.getElementById('progressFill');
+            
+            const interval = setInterval(() => {
+                countdownElement.textContent = seconds;
+                
+                // Atualizar barra de progresso
+                const progress = ((10 - seconds) / 10) * 100;
+                progressFill.style.width = `${progress}%`;
+                
+                seconds--;
+                
+                if (seconds < 0) {
+                    clearInterval(interval);
+                    showKeyScreen();
+                }
+            }, 1000);
+        }
+        
+        // Mostrar tela da key
+        function showKeyScreen() {
+            document.getElementById('waitScreen').style.display = 'none';
+            document.getElementById('keyScreen').style.display = 'block';
+            
+            // Mostrar key
+            document.getElementById('keyText').textContent = userKey;
+            
+            // Calcular expiração (2 horas)
+            const now = new Date();
+            const expiry = new Date(now.getTime() + 2 * 60 * 60 * 1000);
+            document.getElementById('expiryTime').textContent = 
+                expiry.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            
+            // Iniciar timer
+            startKeyTimer();
+            
+            // Auto-copiar após 2 segundos
+            setTimeout(() => {
+                copyKey();
+                
+                // Registrar acesso no localStorage
+                localStorage.setItem('dz7_last_access', new Date().toISOString());
+                localStorage.setItem('dz7_device_id', deviceId);
+                localStorage.setItem('dz7_location', userLocation);
+                
+                // Enviar dados para o backend (simulado)
+                sendAnalytics();
+            }, 2000);
+        }
+        
+        // Timer da key (2 horas)
+        function startKeyTimer() {
+            let totalSeconds = 2 * 60 * 60;
+            const timerElement = document.getElementById('timer');
+            
+            function updateTimer() {
+                if (totalSeconds <= 0) {
+                    timerElement.textContent = "EXPIRADA";
+                    timerElement.style.color = "#ff6b6b";
+                    return;
+                }
+                
+                const hours = Math.floor(totalSeconds / 3600);
+                const minutes = Math.floor((totalSeconds % 3600) / 60);
+                const seconds = totalSeconds % 60;
+                
+                timerElement.textContent = 
+                    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                totalSeconds--;
+            }
+            
+            setInterval(updateTimer, 1000);
+            updateTimer();
+        }
+        
+        // Copiar key
         function copyKey() {
             const keyText = document.getElementById('keyText').textContent;
             
             navigator.clipboard.writeText(keyText).then(() => {
                 const btn = document.querySelector('.copy-btn');
                 const originalText = btn.textContent;
+                
                 btn.textContent = '✅ KEY COPIADA!';
                 btn.style.background = '#00b894';
+                btn.disabled = true;
                 
                 setTimeout(() => {
                     btn.textContent = originalText;
                     btn.style.background = '#8B00FF';
-                }, 2000);
+                    btn.disabled = false;
+                }, 3000);
             });
         }
         
-        // Auto-copiar após 3 segundos
-        setTimeout(() => {
-            copyKey();
+        // Enviar analytics (simulado)
+        function sendAnalytics() {
+            const data = {
+                key: userKey,
+                location: userLocation,
+                device_id: deviceId,
+                timestamp: new Date().toISOString(),
+                user_agent: navigator.userAgent,
+                screen: `${screen.width}x${screen.height}`,
+                language: navigator.language
+            };
             
-            // Mostrar notificação
-            const alertDiv = document.querySelector('.alert');
-            alertDiv.innerHTML = '✅ <strong>Key copiada automaticamente!</strong> Agora cole no Discord usando <code>/resgatar ' + key + '</code>';
-            alertDiv.style.background = '#d4edda';
-            alertDiv.style.borderColor = '#c3e6cb';
-            alertDiv.style.color = '#155724';
-        }, 3000);
+            // Aqui você enviaria para um backend real
+            console.log('Analytics:', data);
+            
+            // Exemplo de envio para um webhook
+            /*
+            fetch('https://seu-backend.com/analytics', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            });
+            */
+        }
     </script>
 </body>
-</html>
+    </html>
