@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>🎮 DZ7 Engine - Sua Key</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .logo {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        
+        .key-box {
+            background: #f8f9fa;
+            border: 2px dashed #8B00FF;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 25px 0;
+            position: relative;
+        }
+        
+        .key {
+            font-family: 'Courier New', monospace;
+            font-size: 20px;
+            font-weight: bold;
+            color: #8B00FF;
+            letter-spacing: 2px;
+            word-break: break-all;
+        }
+        
+        .copy-btn {
+            background: #8B00FF;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 15px 0;
+            transition: all 0.3s;
+        }
+        
+        .copy-btn:hover {
+            background: #7a00e6;
+            transform: translateY(-2px);
+        }
+        
+        .copy-btn:active {
+            transform: translateY(0);
+        }
+        
+        .instructions {
+            background: #e8f4ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 25px;
+            text-align: left;
+        }
+        
+        .step {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+        
+        .step-number {
+            background: #8B00FF;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: bold;
+        }
+        
+        .alert {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            color: #856404;
+        }
+        
+        .timer {
+            font-size: 14px;
+            color: #666;
+            margin-top: 10px;
+        }
+        
+        .expiry {
+            color: #ff6b6b;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        
+        .discord-btn {
+            background: #5865F2;
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            display: inline-block;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">🎮</div>
+        <h1>DZ7 ENGINE PRO</h1>
+        <p class="subtitle">Sua key de 2 horas está pronta!</p>
+        
+        <div class="key-box">
+            <p style="color: #666; margin-bottom: 10px;">🔑 SUA KEY:</p>
+            <div class="key" id="keyText">CARREGANDO...</div>
+            <div class="timer">⏱️ Key válida por: <span id="timer">2:00</span></div>
+            <div class="expiry">⏰ Expira em: <span id="expiryTime">--:--</span></div>
+        </div>
+        
+        <button class="copy-btn" onclick="copyKey()">
+            📋 COPIAR KEY
+        </button>
+        
+        <div class="instructions">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div>Clique no botão acima para copiar a key</div>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div>Volte para o Discord</div>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div>Use o comando: <code style="background: #333; color: #0f0; padding: 5px 10px; border-radius: 5px;">/resgatar SUA_KEY</code></div>
+            </div>
+        </div>
+        
+        <div class="alert">
+            ⚠️ <strong>IMPORTANTE:</strong> Esta key é pessoal e intransferível. 
+            Não compartilhe com ninguém!
+        </div>
+        
+        <a href="https://discord.com" class="discord-btn" target="_blank">
+            🔗 VOLTAR PARA O DISCORD
+        </a>
+    </div>
+
+    <script>
+        // Pegar key da URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const key = urlParams.get('key');
+        const expiry = urlParams.get('expiry') || '2:00';
+        
+        // Mostrar key
+        if (key) {
+            document.getElementById('keyText').textContent = key;
+            document.getElementById('expiryTime').textContent = expiry;
+        } else {
+            document.getElementById('keyText').textContent = 'KEY NÃO ENCONTRADA';
+            document.getElementById('keyText').style.color = '#ff6b6b';
+        }
+        
+        // Timer de 2 horas
+        let totalSeconds = 2 * 60 * 60; // 2 horas em segundos
+        const timerElement = document.getElementById('timer');
+        
+        function updateTimer() {
+            if (totalSeconds <= 0) {
+                timerElement.textContent = "EXPIRADA";
+                timerElement.style.color = "#ff6b6b";
+                document.getElementById('keyText').style.color = "#999";
+                return;
+            }
+            
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+            
+            timerElement.textContent = 
+                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            totalSeconds--;
+        }
+        
+        // Atualizar timer a cada segundo
+        setInterval(updateTimer, 1000);
+        updateTimer();
+        
+        // Função copiar key
+        function copyKey() {
+            const keyText = document.getElementById('keyText').textContent;
+            
+            navigator.clipboard.writeText(keyText).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                const originalText = btn.textContent;
+                btn.textContent = '✅ KEY COPIADA!';
+                btn.style.background = '#00b894';
+                
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = '#8B00FF';
+                }, 2000);
+            });
+        }
+        
+        // Auto-copiar após 3 segundos
+        setTimeout(() => {
+            copyKey();
+            
+            // Mostrar notificação
+            const alertDiv = document.querySelector('.alert');
+            alertDiv.innerHTML = '✅ <strong>Key copiada automaticamente!</strong> Agora cole no Discord usando <code>/resgatar ' + key + '</code>';
+            alertDiv.style.background = '#d4edda';
+            alertDiv.style.borderColor = '#c3e6cb';
+            alertDiv.style.color = '#155724';
+        }, 3000);
+    </script>
+</body>
+</html>
