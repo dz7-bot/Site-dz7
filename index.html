@@ -3,66 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DZ7 Engine Pro - Verificação</title>
-    
-    <!-- Configurações (ALTERE AQUI!) -->
-    <script>
-        const CONFIG = {
-            LINKVERTISE_URL: 'https://linkvertise.com/SEU_LINK_AQUI',  // ⚠️ COLOQUE SEU LINK AQUI
-            DISCORD_INVITE: 'https://discord.gg/3F99VYRh86',
-            SITE_NAME: 'DZ7 Engine Pro',
-            COOLDOWN_DAYS: 3,
-            KEY_DURATION_HOURS: 2,
-            ADMIN_PASSWORD: 'dz7admin123'
-        };
-    </script>
-    
+    <title>DZ7 Engine - Gerar Key</title>
     <style>
-        :root {
-            --primary: #8B00FF;
-            --dark: #000000;
-            --dark-purple: #2D0030;
-            --light-purple: #A020F0;
-            --success: #00FF00;
-            --error: #FF0000;
-            --warning: #FFA500;
-            --neon: #00FFFF;
-            --matrix: #00FF41;
-            --cyber: #00FF88;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
         body {
-            background: linear-gradient(135deg, var(--dark) 0%, var(--dark-purple) 50%, var(--dark) 100%);
+            background: #000;
             color: white;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            overflow-x: hidden;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
         }
-        
         .container {
-            width: 100%;
-            max-width: 1000px;
-            background: rgba(0, 0, 0, 0.9);
-            border-radius: 25px;
-            border: 3px solid var(--primary);
-            box-shadow: 0 0 80px rgba(139, 0, 255, 0.4);
-            overflow: hidden;
-            animation: glow 3s infinite alternate;
+            max-width: 600px;
+            margin: 0 auto;
+            background: #1a001a;
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px solid #8B00FF;
+        }
+        .key-box {
+            background: #111;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px dashed #8B00FF;
+            font-family: monospace;
+            font-size: 24px;
+            color: #00FF00;
+        }
+        .btn {
+            background: #8B00FF;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+        }
+        .instructions {
+            background: rgba(139, 0, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 DZ7 ENGINE PRO</h1>
+        <p>Gerador de Keys de Acesso</p>
+        
+        <div class="instructions">
+            <h3>📋 Como funciona:</h3>
+            <ol>
+                <li>Clique no botão abaixo para gerar sua key</li>
+                <li>Copie a key que aparecerá</li>
+                <li>Volte para o Discord</li>
+                <li>Use o comando: <code>/resgatar SUA_KEY</code></li>
+            </ol>
+        </div>
+        
+        <button class="btn" onclick="generateKey()">
+            🔑 GERAR MINHA KEY AGORA
+        </button>
+        
+        <div id="keyResult" style="display:none;">
+            <h2>✅ SUA KEY FOI GERADA!</h2>
+            <div class="key-box" id="generatedKey"></div>
+            <p>Copie esta key e use no Discord com:</p>
+            <p><code>/resgatar <span id="keyCommand"></span></code></p>
+            <button class="btn" onclick="copyKey()">
+                📋 COPIAR KEY
+            </button>
+            <br>
+            <a href="https://discord.gg/3F99VYRh86" class="btn">
+                🎮 VOLTAR PARA O DISCORD
+            </a>
+        </div>
+    </div>
+    
+    <script>
+        // Função para gerar key
+        function generateKey() {
+            // Gerar key no formato: DZ7-XXXX-XXXX-XXXX
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let key = 'DZ7-';
+            
+            for (let i = 0; i < 12; i++) {
+                if (i > 0 && i % 4 === 0) key += '-';
+                key += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            
+            // Adicionar timestamp para unicidade
+            key += '-' + Date.now().toString().slice(-4);
+            
+            // Mostrar key na tela
+            document.getElementById('generatedKey').textContent = key;
+            document.getElementById('keyCommand').textContent = key;
+            document.getElementById('keyResult').style.display = 'block';
+            
+            // Salvar no localStorage (simulação de banco de dados)
+            saveKeyToStorage(key);
+            
+            // Rolar para mostrar o resultado
+            document.getElementById('keyResult').scrollIntoView({ behavior: 'smooth' });
         }
         
-        @keyframes glow {
-            0% { box-shadow: 0 0 60px rgba(139, 0, 255, 0.3); }
-            100% { box-shadow: 0 0 100px rgba(139, 0, 255, 0.6); }
+        // Salvar key no localStorage
+        function saveKeyToStorage(key) {
+            const keys = JSON.parse(localStorage.getItem('dz7_keys') || '[]');
+            keys.push({
+                key: key,
+                generatedAt: new Date().toISOString(),
+                expiresAt: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString(), // 2 horas
+                ip: 'user_generated'
+            });
+            localStorage.setItem('dz7_keys', JSON.stringify(keys));
+        }
+        
+        // Copiar key para área de transferência
+        function copyKey() {
+            const key = document.getElementById('generatedKey').textContent;
+            navigator.clipboard.writeText(key).then(() => {
+                const btn = document.querySelector('.btn:nth-of-type(2)');
+                btn.innerHTML = '✅ KEY COPIADA!';
+                btn.style.background = '#00FF00';
+                btn.style.color = '#000';
+                
+                setTimeout(() => {
+                    btn.innerHTML = '📋 COPIAR KEY';
+                    btn.style.background = '';
+                    btn.style.color = '';
+                }, 2000);
+            });
+        }
+        
+        // Verificar se veio do link-target com algum parâmetro
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('ref') || urlParams.has('from') || urlParams.has('source')) {
+            // Usuário veio de um redirecionamento
+            document.querySelector('h1').innerHTML = '🎮 BEM-VINDO AO DZ7 ENGINE!';
+            document.querySelector('p').innerHTML = 'Você foi redirecionado com sucesso!';
+        }
+    </script>
+</body>
+</html>            100% { box-shadow: 0 0 100px rgba(139, 0, 255, 0.6); }
         }
         
         .header {
