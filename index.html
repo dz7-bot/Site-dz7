@@ -561,6 +561,26 @@
         <button class="btn btn-primary" onclick="openKeyGenerator()" style="font-size: 1.3rem; padding: 1.5rem 3rem;">
             <i class="fas fa-rocket"></i> OBTER ACESSO AGORA
         </button>
+        
+        <!-- BOTÃO DE VERIFICAÇÃO DIRETA LINKVERTISE -->
+        <div style="margin-top: 2rem; text-align: center;">
+            <button onclick="goToLinkvertise()" 
+                    style="background: linear-gradient(45deg, #FF6B00, #FFA500);
+                           color: white;
+                           padding: 15px 30px;
+                           border: none;
+                           border-radius: 12px;
+                           font-size: 1rem;
+                           cursor: pointer;
+                           font-weight: bold;
+                           transition: all 0.3s;
+                           margin-top: 1rem;">
+                🔗 VERIFICAÇÃO DIRETA VIA LINKVERTISE
+            </button>
+            <p style="color: #888; font-size: 0.9rem; margin-top: 0.5rem;">
+                ⚡ Rápido e seguro | Após completar, será redirecionado automaticamente
+            </p>
+        </div>
     </section>
 
     <!-- Footer -->
@@ -585,16 +605,16 @@
             <div class="footer-links">
                 <h3>Suporte</h3>
                 <ul>
-                    <li><a href="#">Documentação</a></li>
-                    <li><a href="#">FAQ</a></li>
-                    <li><a href="#">Status do Sistema</a></li>
-                    <li><a href="#">Contato</a></li>
+                    <li><a href="#" onclick="showCommands()">Documentação</a></li>
+                    <li><a href="#" onclick="openKeyGenerator()">FAQ</a></li>
+                    <li><a href="https://dz7-keys2h.vercel.app">Status do Sistema</a></li>
+                    <li><a href="https://discord.gg/3F99VYRh86" target="_blank">Contato</a></li>
                 </ul>
             </div>
         </div>
         <div class="copyright">
             &copy; 2024 DZ7 Engine Pro. Todos os direitos reservados. | 
-            discord.gg/3F99VYRh86
+            discord.gg/3F99VYRh86 | Site 2: <a href="https://dz7-keys2h.vercel.app" style="color: #8B00FF;">dz7-keys2h.vercel.app</a>
         </div>
     </footer>
 
@@ -657,7 +677,7 @@
             }
         });
 
-        // Modal Functions
+        // ===== FUNÇÕES PRINCIPAIS =====
         function openKeyGenerator() {
             document.getElementById('keyModal').style.display = 'flex';
         }
@@ -667,8 +687,7 @@
         }
 
         function redirectToKeyGenerator() {
-            // Redireciona para o Site 2 (Gerador de Keys)
-            window.open('https://chaves-dz7.vercel.app', '_blank');
+            window.open('https://dz7-keys2h.vercel.app', '_blank');
             closeKeyModal();
         }
 
@@ -676,6 +695,11 @@
             document.getElementById('commands').scrollIntoView({ 
                 behavior: 'smooth' 
             });
+        }
+
+        // ===== LINKVERTISE INTEGRATION =====
+        function goToLinkvertise() {
+            window.open('https://linkvertise.com/access/3166989/s1eOwYJNlIr0', '_blank');
         }
 
         // Close modal on ESC
@@ -718,6 +742,13 @@
             el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
             observer.observe(el);
         });
+
+        // Auto-hide modal after 10 seconds
+        setTimeout(() => {
+            if (document.getElementById('keyModal').style.display === 'flex') {
+                closeKeyModal();
+            }
+        }, 10000);
     </script>
 </body>
     </html>
